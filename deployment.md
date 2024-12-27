@@ -1,17 +1,54 @@
-sudo apt update
-sudo apt install nginx
+Install nginx:
 
-sudo git pull 
+`sudo apt update`
 
-systemctl status nginx
+`sudo apt install nginx`
 
-sudo systemctl stop nginx
+check if you have git installed:
 
-sudo nano /etc/nginx/sites-available/default
+`git --version`
 
-replace the content of the server block with the content of the default.config
+if not :
+
+`sudo apt install git`
+
+then clone the repository:
+
+`sudo git clone https://github.com/developerVictoria/test-task-locaria.git`
+
+Then enter the directory in order to make the docker container:
+
+`cd test-task-locaria `
+
+to build docker container:
+
+`docker build -t express-backend . `
+
+And after Run the container:
+
+`docker run -p 3000:3000 express-backend`
+
+then in order to setup the proxy:
+
+check if nginx up and running:
+
+`systemctl status nginx`
+
+
+then alter next file:
+
+`sudo nano /etc/nginx/sites-available/default `
+
+replace the content of the server block with the content of the default.config in the root of the cloned project
 
 save the changes
 
-sudo nginx -t
+confirm that syntax after incertion is correct
 
+`sudo nginx -t `
+
+restart nginx
+
+`sudo systemctl restart nginx`
+
+now, our API wrapper is located at ip_adress of the machine
