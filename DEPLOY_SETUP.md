@@ -1,3 +1,22 @@
+Install and setup redis
+
+`sudo apt update`
+
+`sudo apt install redis-server`
+
+Go to the next file:
+`sudo nano /etc/redis/redis.conf`
+
+Fild the uncomented line 'supervised: no'
+
+And change it to : 'supervised systemd'
+
+After save the file.
+
+then start redis:
+
+`sudo systemctl restart redis.service`
+
 Install nginx:
 
 `sudo apt update`

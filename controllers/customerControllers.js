@@ -1,6 +1,9 @@
 const {getInformationAboutClient,  getInformationAboutOrder} = require('../utils/customerUtils')
 const {generateAccessToken} = require('../middleware/protectRoutes');
-const axios = require('axios');
+
+const Redis =require('ioredis');
+const redisClient = new Redis();
+
 
 const authorizeUser = async (req, res)=>{
     const token = generateAccessToken(req.params.userId);
@@ -8,8 +11,12 @@ const authorizeUser = async (req, res)=>{
 }
 
 const getSummary = async (req, res) => {
-  try{
-        let clientInfo = {
+    try{
+        const cacheResults = await redisClient.get(req.params.userId);
+        if(cacheResults){
+            res.json(JSON.parse(cacheResults));
+        }else{
+            let clientInfo = {
                 'address': 'not provided',
                 'billing_info':'not provided',
                 'invocies':'not provided',
@@ -45,10 +52,14 @@ const getSummary = async (req, res) => {
                 clientInfo['jobs'] = jobsInfo;
                 clientInfo['delivery_info'] = deliveryInfo;
             }
-
+        redisClient.set(req.params.userId, JSON.stringify(clientInfo));
         res.json(clientInfo);
+        }
+
+        
+        
     }catch(err){
-        res.status(403);
+        res.status(404);
     }
        
 }

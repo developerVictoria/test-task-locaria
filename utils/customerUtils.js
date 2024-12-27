@@ -1,7 +1,9 @@
 
 const axios = require('axios');
 
+
 async function  getInformationAboutClient(url, property, isResponseProperty){
+    
     let result = 'not found';
     axios.get(url)
         .then(response => {
